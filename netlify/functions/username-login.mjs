@@ -1,146 +1,221 @@
-// username-login.mjs
 // Molla Pro Zone AI
+// Username Login Function
 // Developer: Manik Hossain Molla
 
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
 
 const supabase = createClient(
-  supabaseUrl,
-  supabaseAnonKey
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
 );
 
-const admin = createClient(
-  supabaseUrl,
-  supabaseServiceKey
+
+const adminClient = createClient(
+  SUPABASE_URL,
+  SUPABASE_SERVICE_ROLE_KEY
 );
+
 
 
 export async function handler(event) {
 
+
   if (event.httpMethod !== "POST") {
+
     return {
       statusCode: 405,
       body: JSON.stringify({
         success:false,
-        message:"Method not allowed"
+        message:"Only POST request allowed"
       })
     };
+
   }
+
 
 
   try {
 
-    const body = JSON.parse(event.body);
 
-    const username = body.username;
-    const password = body.password;
+    const requestBody = JSON.parse(event.body);
 
 
-    if(!username || !password){
+    const username = requestBody.username;
+    const password = requestBody.password;
+
+
+
+    if (!username || !password) {
+
 
       return {
+
         statusCode:400,
+
         body:JSON.stringify({
+
           success:false,
+
           message:"Username and password required"
+
         })
+
       };
+
 
     }
 
 
-    // Find user email from username
 
-    const { data:profile, error:profileError } =
-      await admin
+
+    // Find email using username
+
+    const {
+      data: userProfile,
+      error: profileFetchError
+
+    } = await adminClient
+
       .from("profiles")
+
       .select("email")
+
       .eq("username", username)
+
       .single();
 
 
-    if(profileError || !profile){
+
+
+    if (profileFetchError || !userProfile) {
+
 
       return {
+
         statusCode:401,
+
         body:JSON.stringify({
+
           success:false,
-          message:"Username not found"
+
+          message:"Invalid username"
+
         })
+
       };
+
 
     }
 
 
-    // Login with email password
-
-    const { data:loginData, error:loginError } =
-      await supabase.auth.signInWithPassword({
-
-        email:profile.email,
-        password:password
-
-      });
 
 
+    // Login user
 
-    if(loginError){
+    const {
+
+      data: authResult,
+
+      error: loginError
+
+    } = await supabase.auth.signInWithPassword({
+
+      email:userProfile.email,
+
+      password:password
+
+    });
+
+
+
+
+
+    if (loginError) {
+
 
       return {
+
         statusCode:401,
+
         body:JSON.stringify({
+
           success:false,
+
           message:loginError.message
+
         })
+
       };
 
+
     }
+
 
 
 
     return {
 
+
       statusCode:200,
+
 
       body:JSON.stringify({
 
+
         success:true,
+
 
         message:"Login successful",
 
-        user:loginData.user,
 
-        session:loginData.session
+        user:authResult.user,
+
+
+        session:authResult.session
+
 
       })
+
 
     };
 
 
-  } catch(err){
+
+
+  } catch (serverError) {
 
 
     return {
 
+
       statusCode:500,
+
 
       body:JSON.stringify({
 
+
         success:false,
 
-        message:"Server error",
 
-        error:err.message
+        message:"Internal server error",
+
+
+        error:serverError.message
+
 
       })
+
 
     };
 
 
   }
+
 
 }
