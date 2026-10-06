@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="theme-color" content="#080b14"/>
+  <meta name="description" content="Molla Pro Zone AI — premium multimodal AI workspace."/>
+  <title>Molla Pro Zone AI</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net"/>
+  <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+  <div id="toastRoot" class="toast-root"></div>
+
+  <section id="bootScreen" class="boot-screen">
+    <div class="brand-orb"><span>MP</span></div>
+    <h1>Molla Pro Zone AI</h1>
+    <p>Preparing your AI workspace…</p>
+    <div class="boot-loader"><i></i><i></i><i></i></div>
+  </section>
+
+  <section id="authView" class="auth-view hidden">
+    <div class="auth-visual">
+      <div class="noise"></div>
+      <div class="visual-copy">
+        <div class="logo-lockup">
+          <div class="logo-mark">MP</div>
+          <div>
+            <strong>Molla Pro Zone AI</strong>
+            <span>One workspace. Every creative mode.</span>
+          </div>
+        </div>
+        <h1>Think. Create.<br/>Build faster.</h1>
+        <p>Chat, images, video, voice, analysis and project generation in one premium AI workspace.</p>
+        <div class="mini-pills">
+          <span>AI Chat</span><span>Image Studio</span><span>Veo Video</span><span>Voice Studio</span>
+        </div>
+      </div>
+      <footer>Created by <b>Manik Hossain Molla</b></footer>
+    </div>
+
+    <div class="auth-panel">
+      <div class="auth-card">
+        <div class="mobile-brand"><div class="logo-mark">MP</div><strong>Molla Pro Zone AI</strong></div>
+
+        <div id="loginPane" class="auth-pane">
+          <span class="eyebrow">WELCOME BACK</span>
+          <h2>Sign in to continue</h2>
+          <p class="muted">Use your email or username and password.</p>
+          <label>Email or username</label>
+          <input id="loginId" autocomplete="username" placeholder="you@example.com or username"/>
+          <label>Password</label>
+          <div class="password-wrap"><input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••"/><button class="icon-btn pass-toggle" data-target="loginPassword">👁</button></div>
+          <div class="between"><label class="check"><input id="rememberMe" type="checkbox" checked/> Remember me</label><button class="link-btn" id="forgotBtn">Forgot password?</button></div>
+          <button id="loginBtn" class="primary wide">Sign in <span>→</span></button>
+          <p class="switch-copy">New here? <button class="link-btn" id="showSignup">Create an account</button></p>
+        </div>
+
+        <div id="signupPane" class="auth-pane hidden">
+          <span class="eyebrow">CREATE ACCOUNT</span>
+          <h2>Start with 500 credits</h2>
+          <p class="muted">Verify your email to activate your account.</p>
+          <label>Full name</label><input id="signupName" autocomplete="name" placeholder="Your name"/>
+          <label>Username</label><input id="signupUsername" autocomplete="username" placeholder="Choose a username"/>
+          <label>Email</label><input id="signupEmail" type="email" autocomplete="email" placeholder="you@example.com"/>
+          <label>Password</label><div class="password-wrap"><input id="signupPassword" type="password" autocomplete="new-password" placeholder="Minimum 8 characters"/><button class="icon-btn pass-toggle" data-target="signupPassword">👁</button></div>
+          <div class="password-meter"><span id="passwordMeter"></span></div>
+          <label class="check terms"><input id="termsCheck" type="checkbox"/> I agree to the Terms & Privacy Policy.</label>
+          <button id="signupBtn" class="primary wide">Create account <span>→</span></button>
+          <p class="switch-copy">Already have an account? <button class="link-btn" id="showLogin">Sign in</button></p>
+        </div>
+
+        <div id="verifyPane" class="auth-pane hidden">
+          <span class="eyebrow">VERIFY EMAIL</span>
+          <h2>Enter your 6-digit code</h2>
+          <p class="muted">We sent a verification code to <b id="verifyEmailText"></b>.</p>
+          <div class="otp-row" id="otpRow">
+            <input maxlength="1" inputmode="numeric"/><input maxlength="1" inputmode="numeric"/><input maxlength="1" inputmode="numeric"/>
+            <input maxlength="1" inputmode="numeric"/><input maxlength="1" inputmode="numeric"/><input maxlength="1" inputmode="numeric"/>
+          </div>
+          <button id="verifyBtn" class="primary wide">Verify account</button>
+          <div class="between center"><span id="otpTimer" class="muted">Resend in 60s</span><button class="link-btn" id="resendOtp" disabled>Resend code</button></div>
+        </div>
+
+        <div id="resetPane" class="auth-pane hidden">
+          <span class="eyebrow">RESET PASSWORD</span>
+          <h2>Recover your account</h2>
+          <p class="muted">Enter your email and we’ll send a reset link.</p>
+          <label>Email</label><input id="resetEmail" type="email" placeholder="you@example.com"/>
+          <button id="resetBtn" class="primary wide">Send reset email</button>
+          <p class="switch-copy"><button class="link-btn" id="backLogin">Back to sign in</button></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="appView" class="app-view hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="side-brand">
+        <div class="logo-mark">MP</div>
+        <div><strong>Molla Pro Zone AI</strong><span>AI Workspace</span></div>
+      </div>
+      <button id="newChatBtn" class="new-chat">＋ New chat</button>
+      <nav id="mainNav">
+        <button class="nav-item active" data-view="chat"><span>✦</span> AI Chat</button>
+        <button class="nav-item" data-view="image"><span>◫</span> Image Studio</button>
+        <button class="nav-item" data-view="video"><span>▶</span> Video Studio</button>
+        <button class="nav-item" data-view="voice"><span>♫</span> Voice Studio</button>
+        <button class="nav-item" data-view="project"><span>⌘</span> Project Builder</button>
+        <button class="nav-item" data-view="recharge"><span>⚡</span> Recharge Credits</button>
+        <button id="adminNav" class="nav-item hidden" data-view="admin"><span>◆</span> Admin Panel</button>
+      </nav>
+      <div class="side-bottom">
+        <div class="credits-card">
+          <div><span>Credits</span><strong id="sideCredits">0</strong></div>
+          <div class="credit-bar"><i id="creditBar"></i></div>
+          <button data-view="recharge" class="link-btn nav-jump">Recharge</button>
+        </div>
+        <button id="themeBtn" class="nav-item"><span>◐</span> Toggle theme</button>
+        <button id="logoutBtn" class="nav-item danger-text"><span>↪</span> Sign out</button>
+        <small>Created by Manik Hossain Molla</small>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <button id="menuBtn" class="icon-btn mobile-only">☰</button>
+        <div>
+          <strong id="topTitle">AI Chat</strong>
+          <span id="topSubtitle">Molla Pro Zone AI</span>
+        </div>
+        <div class="top-actions">
+          <div class="top-credit"><span>⚡</span><b id="topCredits">0</b><small>credits</small></div>
+          <button id="profileBtn" class="avatar">M</button>
+        </div>
+      </header>
+
+      <div class="view-stack">
+        <section id="view-chat" class="view active">
+          <div class="chat-wrap">
+            <div id="chatEmpty" class="empty-state">
+              <div class="hero-logo">✦</div>
+              <h1>How can I help you today?</h1>
+              <p>Ask anything, upload an image, or choose a creative mode.</p>
+              <div class="quick-grid">
+                <button data-quick="Explain this problem step by step">🧠 <b>Solve a problem</b><span>Reason clearly</span></button>
+                <button class="nav-jump" data-view="image">🎨 <b>Create an image</b><span>Generate visuals</span></button>
+                <button class="nav-jump" data-view="video">🎬 <b>Generate video</b><span>Make a Veo clip</span></button>
+                <button data-quick="Help me write professional content">✍️ <b>Write content</b><span>Draft & improve</span></button>
+              </div>
+            </div>
+            <div id="messages" class="messages"></div>
+          </div>
+          <div class="composer-shell">
+            <div id="attachmentPreview" class="attachment-preview hidden"></div>
+            <div class="composer">
+              <button id="attachImageBtn" class="icon-btn" title="Attach image">＋</button>
+              <textarea id="chatInput" rows="1" placeholder="Message Molla Pro Zone AI…"></textarea>
+              <input id="chatImageInput" type="file" accept="image/*" hidden/>
+              <button id="sendBtn" class="send-btn">↑</button>
+            </div>
+            <small>1 credit per message • AI can make mistakes, verify important information.</small>
+          </div>
+        </section>
+
+        <section id="view-image" class="view">
+          <div class="studio-grid">
+            <div class="studio-form">
+              <span class="eyebrow">IMAGE STUDIO</span><h1>Create with AI</h1><p class="muted">Generate polished images with selectable aspect ratio and resolution.</p>
+              <label>Prompt</label><textarea id="imagePrompt" rows="7" placeholder="Describe the image you want…"></textarea>
+              <label>Aspect ratio</label>
+              <div class="seg-grid ratio-grid" id="imageRatios">
+                <button class="selected" data-value="1:1">1:1<span>Square</span></button>
+                <button data-value="16:9">16:9<span>Landscape</span></button>
+                <button data-value="9:16">9:16<span>Portrait</span></button>
+                <button data-value="4:3">4:3<span>Classic</span></button>
+                <button data-value="3:4">3:4<span>Poster</span></button>
+                <button data-value="3:2">3:2<span>Photo</span></button>
+              </div>
+              <label>Resolution</label><select id="imageSize"><option>1K</option><option>2K</option><option>4K</option></select>
+              <button id="generateImageBtn" class="primary wide">✦ Generate image <span>20 credits</span></button>
+            </div>
+            <div class="result-panel" id="imageResult">
+              <div class="result-placeholder"><div>◫</div><h3>Your image will appear here</h3><p>Choose a ratio, write a prompt and generate.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-video" class="view">
+          <div class="studio-grid">
+            <div class="studio-form">
+              <span class="eyebrow">VIDEO STUDIO</span><h1>Generate cinematic video</h1><p class="muted">Create an 8-second Veo clip with native audio when supported by your API access.</p>
+              <label>Prompt</label><textarea id="videoPrompt" rows="7" placeholder="Describe scene, camera movement, dialogue and sound…"></textarea>
+              <label>Aspect ratio</label>
+              <div class="seg-grid" id="videoRatios"><button class="selected" data-value="16:9">16:9<span>Landscape</span></button><button data-value="9:16">9:16<span>Portrait</span></button></div>
+              <label>Resolution</label><select id="videoResolution"><option value="720p">720p</option><option value="1080p">1080p</option><option value="4k">4K</option></select>
+              <button id="generateVideoBtn" class="primary wide">▶ Generate video <span>50 credits</span></button>
+            </div>
+            <div class="result-panel" id="videoResult">
+              <div class="result-placeholder"><div>▶</div><h3>Your video will appear here</h3><p>Generation may take a few minutes.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-voice" class="view">
+          <div class="studio-grid">
+            <div class="studio-form">
+              <span class="eyebrow">VOICE STUDIO</span><h1>Text to natural voice</h1><p class="muted">Generate Bengali or English narration with selectable voice and style.</p>
+              <label>Text</label><textarea id="voiceText" rows="8" placeholder="বাংলা বা English text লিখুন…"></textarea>
+              <div class="two-col"><div><label>Voice</label><select id="voiceName"><option>Kore</option><option>Puck</option><option>Charon</option><option>Fenrir</option><option>Leda</option><option>Aoede</option><option>Orus</option><option>Zephyr</option></select></div><div><label>Style</label><select id="voiceStyle"><option value="warm professional narrator">Professional</option><option value="calm and relaxed">Calm</option><option value="energetic and upbeat">Energetic</option><option value="deep documentary narrator">Documentary</option><option value="soft storytelling voice">Storytelling</option><option value="clear news presenter">News</option></select></div></div>
+              <div class="between"><small id="voiceEstimate">Estimated duration: 0s</small><small>Max target: 5 minutes</small></div>
+              <button id="generateVoiceBtn" class="primary wide">♫ Generate audio <span id="voiceCostLabel">10 credits</span></button>
+            </div>
+            <div class="result-panel" id="voiceResult">
+              <div class="result-placeholder"><div>♫</div><h3>Your voice will appear here</h3><p>Preview and download the generated WAV audio.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-project" class="view">
+          <div class="studio-grid">
+            <div class="studio-form">
+              <span class="eyebrow">PROJECT BUILDER</span><h1>Build multi-file projects</h1><p class="muted">Describe an app, extension or website. AI returns files you can save directly into a chosen folder.</p>
+              <label>Project request</label><textarea id="projectPrompt" rows="10" placeholder="Example: Create a Chrome extension that…"></textarea>
+              <div class="info-box">On Chrome/Edge desktop, you can select a folder and write generated files directly. Other browsers get a ZIP fallback.</div>
+              <button id="buildProjectBtn" class="primary wide">⌘ Build project <span>20 credits</span></button>
+            </div>
+            <div class="result-panel project-result" id="projectResult">
+              <div class="result-placeholder"><div>⌘</div><h3>Project files will appear here</h3><p>You can review the file tree before saving.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-recharge" class="view">
+          <div class="page-narrow">
+            <span class="eyebrow">CREDITS</span><h1>Recharge your account</h1><p class="muted">Send Money to the Personal bKash number below, then submit your TrxID for approval.</p>
+            <div class="balance-hero"><span>Current balance</span><strong id="rechargeBalance">0</strong><small>credits</small></div>
+            <div id="packageGrid" class="package-grid"></div>
+            <div class="payment-card">
+              <div class="bkash-badge">bKash</div>
+              <div><small>Personal • Send Money</small><strong id="bkashNumber">01729834248</strong></div>
+              <button id="copyBkash" class="secondary">Copy number</button>
+            </div>
+            <label>Selected package</label><input id="selectedPackage" readonly placeholder="Choose a package above"/>
+            <label>Transaction ID (TrxID)</label><input id="trxId" placeholder="Example: BCG7H9XYZ"/>
+            <button id="submitRechargeBtn" class="primary wide">Submit recharge request</button>
+            <div class="history-card"><h3>Your recharge requests</h3><div id="rechargeHistory"></div></div>
+          </div>
+        </section>
+
+        <section id="view-admin" class="view">
+          <div class="admin-wrap">
+            <div class="between align-start"><div><span class="eyebrow">ADMIN PANEL</span><h1>Control center</h1><p class="muted">Approve payments, manage credit pricing and monitor users.</p></div><button id="refreshAdmin" class="secondary">Refresh</button></div>
+            <div class="admin-stats"><div><span>Users</span><strong id="statUsers">—</strong></div><div><span>Pending recharges</span><strong id="statPending">—</strong></div><div><span>Credits issued</span><strong id="statCredits">—</strong></div></div>
+            <div class="admin-card"><h3>Pending recharge requests</h3><div class="table-wrap"><table><thead><tr><th>User</th><th>Package</th><th>TrxID</th><th>Submitted</th><th>Action</th></tr></thead><tbody id="adminRechargeBody"></tbody></table></div></div>
+            <div class="admin-card"><h3>System pricing</h3><div class="settings-grid">
+              <label>Welcome credits<input id="setWelcome" type="number"/></label>
+              <label>Chat cost<input id="setChat" type="number"/></label>
+              <label>Image cost<input id="setImage" type="number"/></label>
+              <label>Video cost<input id="setVideo" type="number"/></label>
+              <label>Voice cost<input id="setVoice" type="number"/></label>
+              <label>Project cost<input id="setProject" type="number"/></label>
+            </div><button id="saveSettingsBtn" class="primary">Save settings</button></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
