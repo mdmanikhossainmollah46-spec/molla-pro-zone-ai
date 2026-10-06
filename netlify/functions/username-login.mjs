@@ -1,10 +1,146 @@
-import { admin, anon, parseBody, ok, fail } from "./_lib.mjs";
-export default async (req)=>{
-  if(req.method!=="POST")return fail(405,"Method not allowed");
-  try{
-    const {username,password}=await parseBody(req);if(!username||!password)return fail(400,"Username and password are required.");
-    const {data:p,error}=await admin.from("profiles").select("email").ilike("username",username).maybeSingle();if(error)throw error;if(!p?.email)return fail(400,"Invalid username or password.");
-   const {data:loginData,error:loginError}=await anon.auth.signInWithPassword({email:p.email,password:password});if(error)return fail(400,"Invalid username or password.");
-    return ok({access_token:data.session.access_token,refresh_token:data.session.refresh_token});
-  }catch(e){return fail(e.status||500,e.message)}
-};
+// username-login.mjs
+// Molla Pro Zone AI
+// Developer: Manik Hossain Molla
+
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const supabase = createClient(
+  supabaseUrl,
+  supabaseAnonKey
+);
+
+const admin = createClient(
+  supabaseUrl,
+  supabaseServiceKey
+);
+
+
+export async function handler(event) {
+
+  if (event.httpMethod !== "POST") {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({
+        success:false,
+        message:"Method not allowed"
+      })
+    };
+  }
+
+
+  try {
+
+    const body = JSON.parse(event.body);
+
+    const username = body.username;
+    const password = body.password;
+
+
+    if(!username || !password){
+
+      return {
+        statusCode:400,
+        body:JSON.stringify({
+          success:false,
+          message:"Username and password required"
+        })
+      };
+
+    }
+
+
+    // Find user email from username
+
+    const { data:profile, error:profileError } =
+      await admin
+      .from("profiles")
+      .select("email")
+      .eq("username", username)
+      .single();
+
+
+    if(profileError || !profile){
+
+      return {
+        statusCode:401,
+        body:JSON.stringify({
+          success:false,
+          message:"Username not found"
+        })
+      };
+
+    }
+
+
+    // Login with email password
+
+    const { data:loginData, error:loginError } =
+      await supabase.auth.signInWithPassword({
+
+        email:profile.email,
+        password:password
+
+      });
+
+
+
+    if(loginError){
+
+      return {
+        statusCode:401,
+        body:JSON.stringify({
+          success:false,
+          message:loginError.message
+        })
+      };
+
+    }
+
+
+
+    return {
+
+      statusCode:200,
+
+      body:JSON.stringify({
+
+        success:true,
+
+        message:"Login successful",
+
+        user:loginData.user,
+
+        session:loginData.session
+
+      })
+
+    };
+
+
+  } catch(err){
+
+
+    return {
+
+      statusCode:500,
+
+      body:JSON.stringify({
+
+        success:false,
+
+        message:"Server error",
+
+        error:err.message
+
+      })
+
+    };
+
+
+  }
+
+}
